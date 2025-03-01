@@ -27,6 +27,7 @@ class Repository extends OfflineFirstWithSupabaseRepository {
   static Future<void> configure(DatabaseFactory databaseFactory) async {
     final (client, queue) = OfflineFirstWithSupabaseRepository.clientQueue(
       databaseFactory: databaseFactory,
+      ignorePaths: {},
     );
 
     await Supabase.initialize(

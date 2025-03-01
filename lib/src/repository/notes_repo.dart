@@ -1,8 +1,12 @@
 // Service layer to handle operations on domain models
 // src/services/note_service.dart
 
+import 'dart:developer';
+
 import 'package:brick_core/core.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:test/brick/models/note.model.dart';
+import 'package:test/brick/models/test_item.model.dart';
 import 'package:test/brick/repository.dart';
 
 import '../models/note_model.dart';
@@ -17,7 +21,6 @@ class NoteService {
 
     // Create a map to hold notes with their categories
     final Map<String, Note> notesMap = {};
-
 
     // Initialize all notes without categories first
     for (final noteRow in noteRows) {
@@ -110,7 +113,6 @@ class NoteService {
     return Note.fromRow(savedNoteRow, categories: categories);
   }
 
-  
   // Delete a note and all its categories
   Future<void> deleteNote(String noteId) async {
     // First get all categories for this note
@@ -132,5 +134,38 @@ class NoteService {
       // Delete the note
       await _repository.delete<NoteRow>(noteRows.first);
     }
+  }
+
+  Future<TestItem> saveTestItem(TestItem item) async {
+    // If id is -1, this is a new record, so we'll use a custom approach
+    if (item.id == -1) {
+      // Execute a direct Supabase insert that will generate the ID
+      final response = await Supabase.instance.client
+          .from('test_item')
+          .insert({
+            'name': item.name,
+            'created_at': item.createdAt ?? DateTime.now().toIso8601String(),
+          })
+          .select()
+          .single();
+
+      // Create a new TestItem with the ID from Supabase
+      final newItem = TestItem(
+        id: response['id'],
+        name: item.name,
+        createdAt: item.createdAt,
+      );
+      return _repository.upsert<TestItem>(newItem);
+    } else {
+      // For existing records, use normal upsert
+      return await _repository.upsert<TestItem>(item);
+    }
+  }
+
+  Future<List<TestItem>> getTestItems() async {
+    final items = await _repository.get<TestItem>();
+    log('=!!!!!!!!!!!');
+    items.map((item) => log('==> ${item.id} -- ${item.name}')).toList();
+    return items;
   }
 }
