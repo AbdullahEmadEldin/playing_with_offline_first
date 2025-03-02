@@ -1,71 +1,71 @@
 // GENERATED CODE DO NOT EDIT
 part of '../brick.g.dart';
 
-Future<NoteRow> _$NoteRowFromSupabase(
+Future<Category> _$CategoryFromSupabase(
   Map<String, dynamic> data, {
   required SupabaseProvider provider,
   OfflineFirstWithSupabaseRepository? repository,
 }) async {
-  return NoteRow(
-    content: data['content'] as String,
+  return Category(
+    name: data['name'] as String,
     createdAt: data['created_at'] as String,
     id: data['id'] as String?,
-    userId: data['user_id'] as String,
+    noteId: data['note_id'] as String,
   );
 }
 
-Future<Map<String, dynamic>> _$NoteRowToSupabase(
-  NoteRow instance, {
+Future<Map<String, dynamic>> _$CategoryToSupabase(
+  Category instance, {
   required SupabaseProvider provider,
   OfflineFirstWithSupabaseRepository? repository,
 }) async {
   return {
-    'content': instance.content,
+    'name': instance.name,
     'created_at': instance.createdAt,
     'id': instance.id,
-    'user_id': instance.userId,
+    'note_id': instance.noteId,
   };
 }
 
-Future<NoteRow> _$NoteRowFromSqlite(
+Future<Category> _$CategoryFromSqlite(
   Map<String, dynamic> data, {
   required SqliteProvider provider,
   OfflineFirstWithSupabaseRepository? repository,
 }) async {
-  return NoteRow(
-    content: data['content'] as String,
+  return Category(
+    name: data['name'] as String,
     createdAt: data['created_at'] as String,
     id: data['id'] as String,
-    userId: data['user_id'] as String,
+    noteId: data['note_id'] as String,
   )..primaryKey = data['_brick_id'] as int;
 }
 
-Future<Map<String, dynamic>> _$NoteRowToSqlite(
-  NoteRow instance, {
+Future<Map<String, dynamic>> _$CategoryToSqlite(
+  Category instance, {
   required SqliteProvider provider,
   OfflineFirstWithSupabaseRepository? repository,
 }) async {
   return {
-    'content': instance.content,
+    'name': instance.name,
     'created_at': instance.createdAt,
     'id': instance.id,
-    'user_id': instance.userId,
+    'note_id': instance.noteId,
   };
 }
 
-/// Construct a [NoteRow]
-class NoteRowAdapter extends OfflineFirstWithSupabaseAdapter<NoteRow> {
-  NoteRowAdapter();
+/// Construct a [Category]
+class CategoryAdapter extends OfflineFirstWithSupabaseAdapter<Category> {
+  CategoryAdapter();
 
   @override
-  final supabaseTableName = 'notes';
+  final supabaseTableName = 'category';
   @override
   final defaultToNull = true;
   @override
   final fieldsToSupabaseColumns = {
-    'content': const RuntimeSupabaseColumnDefinition(
+    'name': const RuntimeSupabaseColumnDefinition(
       association: false,
-      columnName: 'content',
+      columnName: 'name',
     ),
     'createdAt': const RuntimeSupabaseColumnDefinition(
       association: false,
@@ -75,9 +75,10 @@ class NoteRowAdapter extends OfflineFirstWithSupabaseAdapter<NoteRow> {
       association: false,
       columnName: 'id',
     ),
-    'userId': const RuntimeSupabaseColumnDefinition(
+    'noteId': const RuntimeSupabaseColumnDefinition(
       association: false,
-      columnName: 'user_id',
+      columnName: 'note_id',
+      foreignKey: 'note_id',
     ),
   };
   @override
@@ -92,9 +93,9 @@ class NoteRowAdapter extends OfflineFirstWithSupabaseAdapter<NoteRow> {
       iterable: false,
       type: int,
     ),
-    'content': const RuntimeSqliteColumnDefinition(
+    'name': const RuntimeSqliteColumnDefinition(
       association: false,
-      columnName: 'content',
+      columnName: 'name',
       iterable: false,
       type: String,
     ),
@@ -110,21 +111,21 @@ class NoteRowAdapter extends OfflineFirstWithSupabaseAdapter<NoteRow> {
       iterable: false,
       type: String,
     ),
-    'userId': const RuntimeSqliteColumnDefinition(
+    'noteId': const RuntimeSqliteColumnDefinition(
       association: false,
-      columnName: 'user_id',
+      columnName: 'note_id',
       iterable: false,
       type: String,
     ),
   };
   @override
   Future<int?> primaryKeyByUniqueColumns(
-    NoteRow instance,
+    Category instance,
     DatabaseExecutor executor,
   ) async {
     final results = await executor.rawQuery(
       '''
-        SELECT * FROM `NoteRow` WHERE id = ? LIMIT 1''',
+        SELECT * FROM `Category` WHERE id = ? LIMIT 1''',
       [instance.id],
     );
 
@@ -137,44 +138,44 @@ class NoteRowAdapter extends OfflineFirstWithSupabaseAdapter<NoteRow> {
   }
 
   @override
-  final String tableName = 'NoteRow';
+  final String tableName = 'Category';
 
   @override
-  Future<NoteRow> fromSupabase(
+  Future<Category> fromSupabase(
     Map<String, dynamic> input, {
     required provider,
     covariant OfflineFirstWithSupabaseRepository? repository,
-  }) async => await _$NoteRowFromSupabase(
+  }) async => await _$CategoryFromSupabase(
     input,
     provider: provider,
     repository: repository,
   );
   @override
   Future<Map<String, dynamic>> toSupabase(
-    NoteRow input, {
+    Category input, {
     required provider,
     covariant OfflineFirstWithSupabaseRepository? repository,
-  }) async => await _$NoteRowToSupabase(
+  }) async => await _$CategoryToSupabase(
     input,
     provider: provider,
     repository: repository,
   );
   @override
-  Future<NoteRow> fromSqlite(
+  Future<Category> fromSqlite(
     Map<String, dynamic> input, {
     required provider,
     covariant OfflineFirstWithSupabaseRepository? repository,
-  }) async => await _$NoteRowFromSqlite(
+  }) async => await _$CategoryFromSqlite(
     input,
     provider: provider,
     repository: repository,
   );
   @override
   Future<Map<String, dynamic>> toSqlite(
-    NoteRow input, {
+    Category input, {
     required provider,
     covariant OfflineFirstWithSupabaseRepository? repository,
-  }) async => await _$NoteRowToSqlite(
+  }) async => await _$CategoryToSqlite(
     input,
     provider: provider,
     repository: repository,

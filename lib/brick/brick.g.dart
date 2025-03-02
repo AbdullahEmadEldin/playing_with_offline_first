@@ -20,25 +20,24 @@ import 'package:brick_offline_first/brick_offline_first.dart' show RuntimeOfflin
 import 'package:sqflite_common/sqlite_api.dart' show DatabaseExecutor;
 
 import '../brick/models/note.model.dart';
-import '../brick/models/note.model.dart';
 import '../brick/models/test_item.model.dart';
 
-part 'adapters/note_row_adapter.g.dart';
-part 'adapters/category_row_adapter.g.dart';
+part 'adapters/note_adapter.g.dart';
+part 'adapters/category_adapter.g.dart';
 part 'adapters/test_item_adapter.g.dart';
 
 /// Supabase mappings should only be used when initializing a [SupabaseProvider]
 final Map<Type, SupabaseAdapter<SupabaseModel>> supabaseMappings = {
-  NoteRow: NoteRowAdapter(),
-  CategoryRow: CategoryRowAdapter(),
+  Note: NoteAdapter(),
+  Category: CategoryAdapter(),
   TestItem: TestItemAdapter()
 };
 final supabaseModelDictionary = SupabaseModelDictionary(supabaseMappings);
 
 /// Sqlite mappings should only be used when initializing a [SqliteProvider]
 final Map<Type, SqliteAdapter<SqliteModel>> sqliteMappings = {
-  NoteRow: NoteRowAdapter(),
-  CategoryRow: CategoryRowAdapter(),
+  Note: NoteAdapter(),
+  Category: CategoryAdapter(),
   TestItem: TestItemAdapter()
 };
 final sqliteModelDictionary = SqliteModelDictionary(sqliteMappings);

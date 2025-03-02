@@ -1,11 +1,7 @@
-import 'dart:developer';
-
-import 'package:brick_core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart' show databaseFactory;
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:test/brick/models/note.model.dart';
-import 'package:test/brick/models/test_item.model.dart';
 import 'package:test/brick/repository.dart';
 import 'package:test/src/repository/notes_repo.dart';
 
@@ -45,7 +41,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   late final NoteService noteService;
-  late final List<NoteRow> notes;
+  late final List<Note> notes;
   @override
   void initState() {
     super.initState();
@@ -66,7 +62,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: Center(
         child: FutureBuilder(
-            future: noteService.getTestItems(),
+            future: noteService.getNotes(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const CircularProgressIndicator();
@@ -86,8 +82,13 @@ class _MyHomePageState extends State<MyHomePage> {
                 itemBuilder: (context, index) {
                   final note = snapshot.data![index];
                   return ListTile(
-                    title: Text(note.name),
-                    subtitle: Text(note.id.toString()),
+                    title: Text(note.content),
+                    subtitle: note.category == null
+                        ? const Text('nothing')
+                        : Row(
+                            children: note.category!
+                                .map((e) => Text(e.name))
+                                .toList()),
                   );
                 },
               );
@@ -95,19 +96,12 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          final newItem = TestItem(
-            name: 'Test Name',
-            createdAt: DateTime.now().toIso8601String(),
+          await noteService.createNote(
+            'Hello new note000',
+            Supabase.instance.client.auth.currentUser!.id,
+            'Catttttegory',
           );
-          final savedItem = await noteService.saveTestItem(newItem);
-          log('====== ${savedItem.id}');
-          setState(() {
-            // noteService.createNote(
-            //   'Hello this is note',
-            //   Supabase.instance.client.auth.currentUser!.id,
-            //   ['Hla Hla'],
-            // );
-          });
+          setState(() {});
         },
         tooltip: 'Increment',
         child: const Icon(Icons.add),
